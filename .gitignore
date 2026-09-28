@@ -1,0 +1,12 @@
+# Editor and IDE folders
+.vscode/
+
+# OS generated files
+Thumbs.db
+.DS_Store
+*.lnk
+desktop.ini
+
+# Temporary / test files
+*.mjs
+temp_edge_profile/

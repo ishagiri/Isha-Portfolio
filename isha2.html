@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Isha Goswami - Professional Web Developer & Designer Portfolio featuring interactive web design, UI/UX, and Java programming."
+    />
+    <title>ISHA'S PORTFOLIO | Web Developer & Designer</title>
+
+    <!-- Google Fonts: Poppins & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Theme Initializer Script (Prevents flash of wrong theme) -->
+    <script>
+      (function () {
+        const savedTheme = localStorage.getItem("portfolio-theme");
+        if (savedTheme === "light") {
+          document.body.classList.add("light-mode");
+        }
+      })();
+    </script>
+
+    <!-- Interactive Background Visual -->
+    <div class="interactive-bg" aria-hidden="true">
+      <img
+        src="background img.png"
+        id="bgImage"
+        alt="Futuristic developer background visual"
+      />
+    </div>
+
+    <!-- Atmospheric Dark & Blue Neon Vignette Overlay -->
+    <div class="bg-overlay" aria-hidden="true"></div>
+
+    <!-- Minimal Professional Preloader -->
+    <div id="loader" role="status" aria-label="Loading portfolio">
+      <div class="loader-content">
+        <div class="loader-icon">
+          <i class="fa-solid fa-code"></i>
+        </div>
+        <h2>ISHA'S PORTFOLIO</h2>
+        <div class="loader-line">
+          <div class="loader-progress"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modern Glass Navbar -->
+    <header>
+      <nav id="navbar" aria-label="Main Navigation">
+        <a href="#home" class="left" aria-label="Isha Portfolio Home">
+          <span class="logo-symbol">&lt;/&gt;</span>
+          <span class="logo-text">ISHA'S PORTFOLIO</span>
+        </a>
+
+        <button
+          class="menu-icon"
+          id="menuToggle"
+          onclick="toggleMenu()"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+        >
+          <span id="menuIcon">☰</span>
+        </button>
+
+        <div class="right">
+          <ul id="nav-menu" role="menubar">
+            <li role="none"><a href="#home" class="nav-link active" role="menuitem">Home</a></li>
+            <li role="none"><a href="#about" class="nav-link" role="menuitem">About</a></li>
+            <li role="none"><a href="#services" class="nav-link" role="menuitem">Services</a></li>
+            <li role="none"><a href="#projects" class="nav-link" role="menuitem">Projects</a></li>
+            <li role="none"><a href="#contact" class="nav-link" role="menuitem">Contact Me</a></li>
+          </ul>
+
+          <button
+            id="theme-toggle"
+            aria-label="Toggle dark and light theme"
+            title="Toggle theme"
+          >
+            <i class="fa-solid fa-sun" id="theme-icon"></i>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <!-- ================= 1. HERO / HOME SECTION ================= -->
+      <section class="firstsection" id="home">
+        <!-- Floating Technology Badges (Subtle 3D Depth) -->
+        <div class="floating-tech-container" aria-hidden="true">
+          <div class="tech-pill tech-html" data-depth="1.6">
+            <i class="fa-brands fa-html5"></i> HTML
+          </div>
+          <div class="tech-pill tech-css" data-depth="-1.2">
+            <i class="fa-brands fa-css3-alt"></i> CSS
+          </div>
+          <div class="tech-pill tech-js" data-depth="2.0">
+            <i class="fa-brands fa-js"></i> JavaScript
+          </div>
+          <div class="tech-pill tech-java" data-depth="-1.8">
+            <i class="fa-brands fa-java"></i> Java
+          </div>
+          <div class="tech-pill tech-sql" data-depth="1.4">
+            <i class="fa-solid fa-database"></i> MySQL
+          </div>
+          <div class="tech-pill tech-uiux" data-depth="-1.5">
+            <i class="fa-solid fa-crop-simple"></i> UI/UX
+          </div>
+          <div class="tech-pill tech-git" data-depth="1.8">
+            <i class="fa-brands fa-git-alt"></i> Git
+          </div>
+          <div class="tech-pill tech-web" data-depth="-1.3">
+            <i class="fa-solid fa-code"></i> Web Dev
+          </div>
+        </div>
+
+        <!-- Left Hero Content -->
+        <div class="leftsection">
+          <div class="hero-badge">
+            <span class="badge-dot"></span>
+            <span>Available for Opportunities</span>
+          </div>
+          <h1 class="hero-title">
+            Hii, I am <span class="name">Isha</span>.
+          </h1>
+          <div class="hero-subtitle">
+            I am a passionate <span id="element"></span>
+          </div>
+          <p class="hero-desc">
+            Building responsive, interactive web applications with modern design
+            principles, intuitive user interfaces, and robust backend integrations.
+          </p>
+          <div class="hero-cta">
+            <a href="#contact" class="btn btn-primary">
+              Let's Talk <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <a href="#projects" class="btn btn-secondary">
+              View Work
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Hero Visual -->
+        <div class="rightsection">
+          <div class="profile-frame">
+            <div class="profile-glow"></div>
+            <div class="profile-ring"></div>
+            <img src="porisha.jpeg" alt="Isha Goswami - Developer Profile" />
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 2. ABOUT SECTION ================= -->
+      <section class="about section-reveal" id="about">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">DISCOVER</span>
+            <h2 class="sub-title">About Me</h2>
+          </div>
+
+          <div class="row">
+            <div class="about-col1">
+              <div class="about-img-box">
+                <div class="about-img-glow"></div>
+                <img src="porisha.jpeg" alt="Isha Goswami" />
+              </div>
+            </div>
+
+            <div class="about-col2">
+              <p class="abtsection">
+                I am a passionate web developer. I also used to explore data
+                analytics and related fields. <br />I have worked with different
+                databases and APIs.
+              </p>
+
+              <!-- Tabs Navigation Pills -->
+              <div class="tab-titles" role="tablist" aria-label="About Information Tabs">
+                <button
+                  class="tab-links active-link"
+                  role="tab"
+                  aria-selected="true"
+                  aria-controls="skills"
+                  id="tab-skills"
+                  onclick="opentab('skills', event)"
+                >
+                  <i class="fa-solid fa-laptop-code"></i> Skills
+                </button>
+                <button
+                  class="tab-links"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="experience"
+                  id="tab-experience"
+                  onclick="opentab('experience', event)"
+                >
+                  <i class="fa-solid fa-briefcase"></i> Experience
+                </button>
+                <button
+                  class="tab-links"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="education"
+                  id="tab-education"
+                  onclick="opentab('education', event)"
+                >
+                  <i class="fa-solid fa-graduation-cap"></i> Education
+                </button>
+              </div>
+
+              <!-- Tab Contents -->
+              <div
+                class="tab-contents active-tab"
+                id="skills"
+                role="tabpanel"
+                aria-labelledby="tab-skills"
+              >
+                <ul>
+                  <li>
+                    <div class="skill-item-header">
+                      <span class="skill-name">WEB DESIGNER</span>
+                      <span class="skill-pct">HTML, CSS, JS, Bootstrap</span>
+                    </div>
+                    <p class="skill-desc">Designing the Web Applications</p>
+                    <div class="skill-progress-bar">
+                      <div class="skill-progress-fill" style="width: 90%"></div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="skill-item-header">
+                      <span class="skill-name">UI/UX</span>
+                      <span class="skill-pct">Wireframing, Interfaces</span>
+                    </div>
+                    <p class="skill-desc">Designing the interfaces</p>
+                    <div class="skill-progress-bar">
+                      <div class="skill-progress-fill" style="width: 85%"></div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="skill-item-header">
+                      <span class="skill-name">JAVA</span>
+                      <span class="skill-pct">Core Java, OOP, SQL</span>
+                    </div>
+                    <p class="skill-desc">Performing programming</p>
+                    <div class="skill-progress-bar">
+                      <div class="skill-progress-fill" style="width: 80%"></div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <div
+                class="tab-contents"
+                id="experience"
+                role="tabpanel"
+                aria-labelledby="tab-experience"
+              >
+                <ul>
+                  <li class="timeline-item">
+                    <span class="timeline-company">Codesoft</span>
+                    <span class="timeline-duration">For 1 months</span>
+                    <p class="timeline-role">Worked as WEB DEVELOPER</p>
+                  </li>
+                </ul>
+              </div>
+
+              <div
+                class="tab-contents"
+                id="education"
+                role="tabpanel"
+                aria-labelledby="tab-education"
+              >
+                <ul>
+                  <li class="timeline-item">
+                    <span class="timeline-year">2024 - Current</span>
+                    <p class="timeline-degree">
+                      BCA from Babu Banarasi Das University
+                    </p>
+                  </li>
+                  <li class="timeline-item">
+                    <span class="timeline-year">2024</span>
+                    <p class="timeline-degree">
+                      Diploma in Financial Accounting
+                    </p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 3. SERVICES SECTION ================= -->
+      <section class="services section-reveal" id="services">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">CAPABILITIES</span>
+            <h2 class="sub-title">My Services</h2>
+          </div>
+
+          <div class="services-list">
+            <div class="service-card">
+              <div class="service-icon-box">
+                <i class="fa-solid fa-code"></i>
+              </div>
+              <h2>Web Design</h2>
+              <p>
+                I build responsive and user-friendly websites using HTML, CSS,
+                JavaScript, Bootstrap and modern web development practices.
+              </p>
+              <a href="#contact" class="card-link">
+                Learn more <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+
+            <div class="service-card">
+              <div class="service-icon-box">
+                <i class="fa-solid fa-crop-simple"></i>
+              </div>
+              <h2>UI/UX</h2>
+              <p>
+                I create intuitive and engaging user interfaces and experiences
+                using the latest design principles and tools.
+              </p>
+              <a href="#contact" class="card-link">
+                Learn more <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+
+            <div class="service-card">
+              <div class="service-icon-box">
+                <i class="fa-solid fa-database"></i>
+              </div>
+              <h2>Database Management</h2>
+              <p>
+                I design and implement efficient database solutions with a focus
+                on performance and scalability.
+              </p>
+              <a href="#contact" class="card-link">
+                Learn more <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 4. PROJECTS SECTION ================= -->
+      <section class="portfolio section-reveal" id="projects">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">PORTFOLIO</span>
+            <h2 class="sub-title">My Work</h2>
+          </div>
+
+          <div class="work-list">
+            <!-- Project 1: Simon Game -->
+            <div class="work">
+              <div class="work-img-wrapper">
+                <img src="simon.png" alt="Simon Game Preview" />
+              </div>
+              <div class="work-info-card">
+                <div class="tech-tags">
+                  <span class="tech-badge">HTML5</span>
+                  <span class="tech-badge">CSS3</span>
+                  <span class="tech-badge">JavaScript</span>
+                </div>
+                <h3>Simon Game</h3>
+                <p>
+                  A fun memory game to test your reflexes. Download it from Play Store.
+                </p>
+              </div>
+              <div class="layer">
+                <div class="tech-tags">
+                  <span class="tech-badge">HTML5</span>
+                  <span class="tech-badge">CSS3</span>
+                  <span class="tech-badge">JavaScript</span>
+                </div>
+                <h3>Simon Game</h3>
+                <p>
+                  A fun memory game to test your reflexes. Download it from Play Store.
+                </p>
+                <a
+                  href="#projects"
+                  class="project-action-btn"
+                  aria-label="View Simon Game Details"
+                >
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- Project 2: BnB / Bank Management System -->
+            <div class="work">
+              <div class="work-img-wrapper">
+                <img
+                  class="bnb"
+                  src="bnb.png"
+                  alt="BnB Management System Preview"
+                />
+              </div>
+              <div class="work-info-card">
+                <div class="tech-tags">
+                  <span class="tech-badge">Java</span>
+                  <span class="tech-badge">MySQL</span>
+                  <span class="tech-badge">UI Design</span>
+                </div>
+                <h3>BnB</h3>
+                <p>
+                  A beautiful bed and breakfast experience. Download it from Play Store.
+                </p>
+              </div>
+              <div class="layer">
+                <div class="tech-tags">
+                  <span class="tech-badge">Java</span>
+                  <span class="tech-badge">MySQL</span>
+                  <span class="tech-badge">UI Design</span>
+                </div>
+                <h3>BnB</h3>
+                <p>
+                  A beautiful bed and breakfast experience. Download it from Play Store.
+                </p>
+                <a
+                  href="#projects"
+                  class="project-action-btn"
+                  aria-label="View BnB Project Details"
+                >
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="see-more-container">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+              See more on GitHub <i class="fa-brands fa-github"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 5. CONTACT SECTION ================= -->
+      <section id="contact" class="section-reveal">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-tag">GET IN TOUCH</span>
+            <h2 class="sub-title">Contact Me</h2>
+            <p class="contact-lead">Let's build something together.</p>
+          </div>
+
+          <div class="row">
+            <div class="contactleft">
+              <div class="contact-item">
+                <div class="contact-icon">
+                  <i class="fas fa-paper-plane"></i>
+                </div>
+                <div class="contact-text">
+                  <span class="contact-label">Email</span>
+                  <a href="mailto:ishagoswami044@gmail.com">ishagoswami044@gmail.com</a>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon">
+                  <i class="fas fa-phone-square"></i>
+                </div>
+                <div class="contact-text">
+                  <span class="contact-label">Phone</span>
+                  <a href="tel:9519017058">9519017058</a>
+                </div>
+              </div>
+
+              <div class="social_icons" aria-label="Social Profiles">
+                <a href="#" aria-label="Facebook" title="Facebook">
+                  <i class="fa-brands fa-facebook-f"></i>
+                </a>
+                <a href="#" aria-label="Twitter" title="Twitter">
+                  <i class="fa-brands fa-twitter"></i>
+                </a>
+                <a href="#" aria-label="Instagram" title="Instagram">
+                  <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/isha-goswami-929940331"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                  title="LinkedIn"
+                >
+                  <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+              </div>
+
+              <a href="#contact" class="btn btn-primary btn-cv">
+                Download CV <i class="fa-solid fa-download"></i>
+              </a>
+            </div>
+
+            <div class="contactright">
+              <form action="#" onsubmit="event.preventDefault(); alert('Thank you for reaching out! Your message has been sent.');">
+                <div class="form-group">
+                  <input
+                    type="text"
+                    name="Name"
+                    id="contact-name"
+                    placeholder="Your Name"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <input
+                    type="email"
+                    name="Email"
+                    id="contact-email"
+                    placeholder="Your Email"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <textarea
+                    name="Message"
+                    id="contact-message"
+                    rows="6"
+                    placeholder="Your Message"
+                    required
+                  ></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn2">
+                  Submit <i class="fa-solid fa-paper-plane"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="copyright">
+        <p>
+          Copyright <i class="fa-regular fa-copyright"></i> Isha Goswami. Made
+          with <i class="fas fa-heart" id="heart"></i> by Isha.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Typed.js Library CDN -->
+    <script src="https://unpkg.com/typed.js@3.0.0/dist/typed.umd.js"></script>
+
+    <!-- Interactive Portfolio Scripts -->
+    <script>
+      // 1. Typed.js Initialization
+      var typed = new Typed("#element", {
+        strings: ["Web Developer.", "Web Designer.", "Freelancer."],
+        typeSpeed: 50,
+        backSpeed: 30,
+        backDelay: 1600,
+        loop: true,
+      });
+
+      // 2. Tab Switching (Skills, Experience, Education)
+      var tablinks = document.getElementsByClassName("tab-links");
+      var tabcontents = document.getElementsByClassName("tab-contents");
+
+      function opentab(tabname, ev) {
+        var e = ev || window.event;
+        for (var i = 0; i < tablinks.length; i++) {
+          tablinks[i].classList.remove("active-link");
+          tablinks[i].setAttribute("aria-selected", "false");
+        }
+        for (var j = 0; j < tabcontents.length; j++) {
+          tabcontents[j].classList.remove("active-tab");
+        }
+        if (e && (e.currentTarget || e.target)) {
+          var targetTab = e.currentTarget || e.target;
+          targetTab.classList.add("active-link");
+          targetTab.setAttribute("aria-selected", "true");
+        }
+        var targetContent = document.getElementById(tabname);
+        if (targetContent) {
+          targetContent.classList.add("active-tab");
+        }
+      }
+
+      // 3. Mobile Menu Toggle
+      function toggleMenu() {
+        const menu = document.querySelector(".right");
+        const icon = document.getElementById("menuIcon");
+        const toggleBtn = document.getElementById("menuToggle");
+
+        menu.classList.toggle("active");
+        const isOpen = menu.classList.contains("active");
+
+        if (toggleBtn) {
+          toggleBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        }
+        if (icon) {
+          icon.innerHTML = isOpen ? "✕" : "☰";
+        }
+      }
+
+      // Close menu when clicking outside or clicking any nav link
+      document.querySelectorAll("#nav-menu a").forEach(function (link) {
+        link.addEventListener("click", function () {
+          document.querySelector(".right").classList.remove("active");
+          const icon = document.getElementById("menuIcon");
+          if (icon) icon.innerHTML = "☰";
+          const toggleBtn = document.getElementById("menuToggle");
+          if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "false");
+        });
+      });
+
+      // 4. Dark / Light Mode with localStorage Persistence
+      const themeToggle = document.getElementById("theme-toggle");
+      const themeIcon = document.getElementById("theme-icon");
+
+      function updateThemeIcon() {
+        if (document.body.classList.contains("light-mode")) {
+          themeIcon.className = "fa-solid fa-moon";
+        } else {
+          themeIcon.className = "fa-solid fa-sun";
+        }
+      }
+      updateThemeIcon();
+
+      themeToggle.addEventListener("click", function () {
+        document.body.classList.toggle("light-mode");
+        const isLight = document.body.classList.contains("light-mode");
+        localStorage.setItem("portfolio-theme", isLight ? "light" : "dark");
+        updateThemeIcon();
+      });
+
+      // 5. Active Navbar Link Highlight on Scroll (IntersectionObserver)
+      const sections = document.querySelectorAll("section[id]");
+      const navLinks = document.querySelectorAll("#nav-menu a");
+
+      const navObserverOptions = {
+        root: null,
+        rootMargin: "-20% 0px -70% 0px",
+        threshold: 0,
+      };
+
+      const navObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            const currentId = entry.target.getAttribute("id");
+            navLinks.forEach(function (link) {
+              if (link.getAttribute("href") === "#" + currentId) {
+                link.classList.add("active");
+              } else {
+                link.classList.remove("active");
+              }
+            });
+          }
+        });
+      }, navObserverOptions);
+
+      sections.forEach(function (section) {
+        navObserver.observe(section);
+      });
+
+      // 6. Scroll Reveal Animations (IntersectionObserver)
+      if ("IntersectionObserver" in window) {
+        document.body.classList.add("has-reveal");
+        const revealObserver = new IntersectionObserver(
+          function (entries, observer) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-revealed");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.05, rootMargin: "0px 0px -20px 0px" }
+        );
+
+        document.querySelectorAll(".section-reveal").forEach(function (el) {
+          revealObserver.observe(el);
+        });
+      }
+
+      // 7. Smooth Mouse Parallax (Optimized with requestAnimationFrame)
+      const bgImage = document.getElementById("bgImage");
+      const techPills = document.querySelectorAll(".tech-pill");
+
+      let mouseX = 0, mouseY = 0;
+      let targetX = 0, targetY = 0;
+      let isFinePointer = window.matchMedia("(pointer: fine) and (min-width: 769px)").matches;
+
+      window.addEventListener("resize", function () {
+        isFinePointer = window.matchMedia("(pointer: fine) and (min-width: 769px)").matches;
+        if (!isFinePointer) {
+          if (bgImage) bgImage.style.transform = "translate3d(0, 0, 0) scale(1.05)";
+          techPills.forEach(function (p) {
+            p.style.transform = "translate3d(0, 0, 0)";
+          });
+        }
+      });
+
+      document.addEventListener("mousemove", function (e) {
+        if (!isFinePointer) return;
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 28;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 28;
+      });
+
+      function animateParallax() {
+        if (isFinePointer) {
+          targetX += (mouseX - targetX) * 0.05;
+          targetY += (mouseY - targetY) * 0.05;
+
+          if (bgImage) {
+            bgImage.style.transform = `translate3d(${targetX.toFixed(2)}px, ${targetY.toFixed(2)}px, 0) scale(1.08)`;
+          }
+
+          techPills.forEach(function (pill) {
+            const depth = parseFloat(pill.getAttribute("data-depth") || "1.0");
+            const pillX = (targetX * depth * 0.6).toFixed(2);
+            const pillY = (targetY * depth * 0.6).toFixed(2);
+            pill.style.transform = `translate3d(${pillX}px, ${pillY}px, 0)`;
+          });
+        }
+        requestAnimationFrame(animateParallax);
+      }
+      requestAnimationFrame(animateParallax);
+    </script>
+  </body>
+</html>
