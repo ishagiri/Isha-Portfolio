@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Messages Dashboard | Isha's Portfolio</title>
+  <!-- Google Fonts: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <!-- FontAwesome 6 -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <link rel="stylesheet" href="/admin/admin.css" />
+</head>
+<body>
+  <div class="dashboard-layout">
+    <!-- Top Navbar -->
+    <header class="dash-navbar">
+      <a href="/admin" class="dash-brand">
+        <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+        <span>Isha's Portfolio</span>
+      </a>
+
+      <div class="dash-nav-actions">
+        <a href="/" target="_blank" class="btn-secondary" title="View live portfolio">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> <span>View Site</span>
+        </a>
+
+        <div class="user-badge" id="admin-user-badge">
+          <div class="user-avatar" id="admin-avatar">A</div>
+          <span id="admin-username-display">Admin</span>
+        </div>
+
+        <button id="logout-btn" class="btn-secondary btn-danger-outline" title="Sign out">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Logout</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="dash-container">
+      <div class="dash-header">
+        <h2>Contact Messages Hub</h2>
+        <p>Manage, inspect, and organize incoming inquiries and client messages.</p>
+      </div>
+
+      <!-- Stats Overview -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon total"><i class="fa-solid fa-inbox"></i></div>
+          <div class="stat-info">
+            <h3 id="stat-total">0</h3>
+            <span>Total Messages</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon unread"><i class="fa-solid fa-envelope"></i></div>
+          <div class="stat-info">
+            <h3 id="stat-unread">0</h3>
+            <span>Unread Messages</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon read"><i class="fa-solid fa-envelope-open"></i></div>
+          <div class="stat-info">
+            <h3 id="stat-read">0</h3>
+            <span>Read Messages</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Toolbar: Search & Filter -->
+      <section class="table-toolbar">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search by name, email, or message keyword..."
+          />
+        </div>
+
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">All Messages</button>
+          <button class="filter-btn" data-filter="unread">Unread Only</button>
+          <button class="filter-btn" data-filter="read">Read</button>
+          <button id="refresh-btn" class="filter-btn" title="Refresh messages">
+            <i class="fa-solid fa-rotate"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- Messages Table Card -->
+      <section class="table-card">
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Date & Time</th>
+                <th>Sender</th>
+                <th>Email</th>
+                <th>Message</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="messages-tbody">
+              <!-- Dynamically populated by admin.js -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Dynamic State Containers (Loading / Empty) -->
+        <div id="table-loader" class="state-container">
+          <i class="fa-solid fa-spinner fa-spin"></i>
+          <h4>Loading messages...</h4>
+          <p>Fetching inquiries from the database</p>
+        </div>
+
+        <div id="table-empty" class="state-container" style="display: none;">
+          <i class="fa-regular fa-folder-open"></i>
+          <h4>No messages found</h4>
+          <p>You currently have no messages matching this filter.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Message Detail Modal -->
+  <div id="message-modal" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-envelope-open-text" style="color: var(--accent-cyan); margin-right: 8px;"></i> Message Details</h3>
+        <button class="close-btn" id="modal-close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="detail-row">
+          <div class="detail-label">Sender Name</div>
+          <div class="detail-value" id="modal-name">-</div>
+        </div>
+
+        <div class="detail-row">
+          <div class="detail-label">Email Address</div>
+          <div class="detail-value">
+            <a href="#" id="modal-email-link">-</a>
+          </div>
+        </div>
+
+        <div class="detail-row">
+          <div class="detail-label">Received At</div>
+          <div class="detail-value" id="modal-date">-</div>
+        </div>
+
+        <div class="detail-row">
+          <div class="detail-label">Full Message</div>
+          <div class="message-box" id="modal-message">-</div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <a href="#" id="modal-reply-btn" class="btn-primary" style="padding: 10px 18px; font-size: 13.5px; text-decoration: none;">
+          <i class="fa-solid fa-reply"></i> Reply via Email
+        </a>
+        <button id="modal-toggle-read-btn" class="btn-secondary">
+          <i class="fa-solid fa-envelope"></i> <span>Toggle Read</span>
+        </button>
+        <button id="modal-delete-btn" class="btn-secondary btn-danger-outline">
+          <i class="fa-solid fa-trash"></i> Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/admin/admin.js"></script>
+</body>
+</html>

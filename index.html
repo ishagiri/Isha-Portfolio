@@ -512,7 +512,7 @@
             </div>
 
             <div class="contactright">
-              <form action="#" onsubmit="event.preventDefault(); alert('Thank you for reaching out! Your message has been sent.');">
+              <form id="contact-form">
                 <div class="form-group">
                   <input
                     type="text"
@@ -540,9 +540,10 @@
                     required
                   ></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary btn2">
+                <button type="submit" id="contact-submit-btn" class="btn btn-primary btn2">
                   Submit <i class="fa-solid fa-paper-plane"></i>
                 </button>
+                <div id="contact-status" class="contact-status" role="status" aria-live="polite"></div>
               </form>
             </div>
           </div>
@@ -738,6 +739,81 @@
         requestAnimationFrame(animateParallax);
       }
       requestAnimationFrame(animateParallax);
+
+      // 8. Contact Form Asynchronous Submission
+      const contactForm = document.getElementById("contact-form");
+      const contactStatus = document.getElementById("contact-status");
+      const contactSubmitBtn = document.getElementById("contact-submit-btn");
+
+      if (contactForm) {
+        contactForm.addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const nameInput = document.getElementById("contact-name");
+          const emailInput = document.getElementById("contact-email");
+          const messageInput = document.getElementById("contact-message");
+
+          const name = nameInput.value.trim();
+          const email = emailInput.value.trim();
+          const message = messageInput.value.trim();
+
+          // Reset status notification
+          contactStatus.className = "contact-status";
+          contactStatus.textContent = "";
+
+          // Client-side validation check
+          if (!name || !email || !message) {
+            contactStatus.className = "contact-status error";
+            contactStatus.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Please fill out all required fields.';
+            return;
+          }
+
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            contactStatus.className = "contact-status error";
+            contactStatus.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Please enter a valid email address.';
+            return;
+          }
+
+          if (message.length < 5) {
+            contactStatus.className = "contact-status error";
+            contactStatus.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Message must be at least 5 characters long.';
+            return;
+          }
+
+          // Disable button and indicate sending
+          const originalBtnHtml = contactSubmitBtn.innerHTML;
+          contactSubmitBtn.disabled = true;
+          contactSubmitBtn.innerHTML = 'Sending... <i class="fa-solid fa-spinner fa-spin"></i>';
+
+          try {
+            const response = await fetch("/api/contact", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ name, email, message }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+              contactStatus.className = "contact-status success";
+              contactStatus.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${data.message || "Thank you! Your message has been sent successfully."}`;
+              contactForm.reset();
+            } else {
+              contactStatus.className = "contact-status error";
+              contactStatus.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${data.message || "Something went wrong. Please check your input and try again."}`;
+            }
+          } catch (error) {
+            console.error("Submission error:", error);
+            contactStatus.className = "contact-status error";
+            contactStatus.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Could not connect to the server. Please verify your connection and try again.';
+          } finally {
+            contactSubmitBtn.disabled = false;
+            contactSubmitBtn.innerHTML = originalBtnHtml;
+          }
+        });
+      }
     </script>
   </body>
 </html>

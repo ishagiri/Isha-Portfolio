@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Portal | Isha's Portfolio</title>
+  <!-- Google Fonts: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <!-- FontAwesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <link rel="stylesheet" href="/admin/admin.css" />
+</head>
+<body>
+  <div class="login-wrapper">
+    <div class="login-card">
+      <div class="login-header">
+        <span class="brand-badge"><i class="fa-solid fa-shield-halved"></i> Security Gateway</span>
+        <h1>Admin Login</h1>
+        <p>Access portfolio message control center</p>
+      </div>
+
+      <div id="login-alert" class="login-alert error" role="alert"></div>
+
+      <form id="admin-login-form">
+        <div class="form-group">
+          <label for="username">Username or Email</label>
+          <div class="input-with-icon">
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="admin or email"
+              autocomplete="username"
+              required
+            />
+            <i class="fa-solid fa-user"></i>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-with-icon">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="••••••••••••"
+              autocomplete="current-password"
+              required
+            />
+            <i class="fa-solid fa-lock"></i>
+          </div>
+        </div>
+
+        <button type="submit" id="login-btn" class="btn-primary">
+          <span>Authenticate</span> <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </form>
+
+      <a href="/" class="back-link">
+        <i class="fa-solid fa-chevron-left"></i> Return to Portfolio
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // Quick redirect if already authenticated
+    (function checkExistingSession() {
+      const token = localStorage.getItem('portfolio_admin_token');
+      if (token) {
+        // Verify with server
+        fetch('/api/admin/stats', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }).then(res => {
+          if (res.ok) window.location.href = '/admin';
+        }).catch(() => {});
+      }
+    })();
+
+    const loginForm = document.getElementById('admin-login-form');
+    const alertBox = document.getElementById('login-alert');
+    const loginBtn = document.getElementById('login-btn');
+
+    loginForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!username || !password) {
+        showAlert('Please enter both username and password.');
+        return;
+      }
+
+      hideAlert();
+      const originalBtnContent = loginBtn.innerHTML;
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<span>Verifying...</span> <i class="fa-solid fa-spinner fa-spin"></i>';
+
+      try {
+        const response = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          localStorage.setItem('portfolio_admin_token', data.token);
+          localStorage.setItem('portfolio_admin_user', JSON.stringify(data.user));
+          window.location.href = '/admin';
+        } else {
+          showAlert(data.message || 'Authentication failed. Please check credentials.');
+        }
+      } catch (err) {
+        showAlert('Server connection error. Please ensure backend is running.');
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = originalBtnContent;
+      }
+    });
+
+    function showAlert(msg) {
+      alertBox.textContent = msg;
+      alertBox.style.display = 'flex';
+    }
+
+    function hideAlert() {
+      alertBox.style.display = 'none';
+      alertBox.textContent = '';
+    }
+  </script>
+</body>
+</html>

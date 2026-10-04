@@ -10,3 +10,13 @@ desktop.ini
 # Temporary / test files
 *.mjs
 temp_edge_profile/
+
+# Node.js dependencies & environment
+node_modules/
+.env
+.env.*
+!.env.example
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
