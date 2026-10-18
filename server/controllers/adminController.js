@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { query } = require('../db/connection');
-const { isDatabaseReady } = require('../db/init');
+const { isDatabaseReady, ensureDatabaseReady } = require('../db/init');
 const { JWT_SECRET } = require('../middleware/auth');
 const { inMemoryMessages } = require('./contactController');
 require('dotenv').config();
@@ -26,6 +26,7 @@ async function login(req, res) {
 
     let adminFound = null;
 
+    await ensureDatabaseReady();
     if (isDatabaseReady()) {
       try {
         const rows = await query(
@@ -124,6 +125,7 @@ async function getMessages(req, res) {
   try {
     let messages = [];
 
+    await ensureDatabaseReady();
     if (isDatabaseReady()) {
       messages = await query(
         'SELECT id, name, email, message, is_read, created_at FROM messages ORDER BY created_at DESC'
@@ -162,6 +164,7 @@ async function getMessageById(req, res) {
 
     let message = null;
 
+    await ensureDatabaseReady();
     if (isDatabaseReady()) {
       const rows = await query('SELECT * FROM messages WHERE id = ? LIMIT 1', [messageId]);
       if (rows && rows.length > 0) message = rows[0];
@@ -197,6 +200,7 @@ async function updateReadStatus(req, res) {
     // Default to read (1) if not explicitly provided
     const isRead = typeof req.body.is_read !== 'undefined' ? (req.body.is_read ? 1 : 0) : 1;
 
+    await ensureDatabaseReady();
     if (isDatabaseReady()) {
       const result = await query('UPDATE messages SET is_read = ? WHERE id = ?', [isRead, messageId]);
       if (result.affectedRows === 0) {
@@ -232,6 +236,7 @@ async function deleteMessage(req, res) {
       return res.status(400).json({ success: false, message: 'Invalid message ID.' });
     }
 
+    await ensureDatabaseReady();
     if (isDatabaseReady()) {
       const result = await query('DELETE FROM messages WHERE id = ?', [messageId]);
       if (result.affectedRows === 0) {
@@ -264,6 +269,7 @@ async function getStats(req, res) {
     let total = 0;
     let unread = 0;
 
+    await ensureDatabaseReady();
     if (isDatabaseReady()) {
       const totalRows = await query('SELECT COUNT(*) as total FROM messages');
       const unreadRows = await query('SELECT COUNT(*) as unread FROM messages WHERE is_read = 0');

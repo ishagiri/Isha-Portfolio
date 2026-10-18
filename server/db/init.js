@@ -13,16 +13,23 @@ async function initDatabase() {
   const database = process.env.DB_NAME || 'portfolio_db';
 
   try {
-    // 1. Try to connect to MySQL server (without selecting DB first) to ensure database exists
-    const rootConn = await mysql.createConnection({
-      host,
-      port,
-      user,
-      password,
-    });
+    // 1. Try to ensure database exists locally (in cloud MySQL, DB is pre-created by the provider)
+    try {
+      const isRemoteHost = host && host !== 'localhost' && host !== '127.0.0.1';
+      const useSSL = process.env.DB_SSL === 'true' || (process.env.NODE_ENV === 'production' && isRemoteHost);
+      const rootConn = await mysql.createConnection({
+        host,
+        port,
+        user,
+        password,
+        ...(useSSL ? { ssl: { rejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED !== 'false' } } : {}),
+      });
 
-    await rootConn.query(`CREATE DATABASE IF NOT EXISTS \`${database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
-    await rootConn.end();
+      await rootConn.query(`CREATE DATABASE IF NOT EXISTS \`${database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
+      await rootConn.end();
+    } catch (rootErr) {
+      // Non-fatal: Managed cloud MySQL providers restrict CREATE DATABASE or require selecting an existing DB
+    }
 
     // 2. Create tables using the pool
     await pool.query(`
@@ -85,7 +92,23 @@ function isDatabaseReady() {
   return dbReady;
 }
 
+let initPromise = null;
+
+async function ensureDatabaseReady() {
+  if (dbReady) return true;
+  if (!initPromise) {
+    initPromise = initDatabase().finally(() => {
+      // allow retry on failure
+      if (!dbReady) {
+        setTimeout(() => { initPromise = null; }, 5000);
+      }
+    });
+  }
+  return initPromise;
+}
+
 module.exports = {
   initDatabase,
+  ensureDatabaseReady,
   isDatabaseReady,
 };

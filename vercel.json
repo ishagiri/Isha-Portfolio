@@ -1,0 +1,25 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "routes": [
+    {
+      "src": "^/(schema\\.sql|package\\.json|package-lock\\.json|\\.env.*|server(/.*)?)$",
+      "status": 403
+    },
+    {
+      "src": "^/api/(.*)",
+      "dest": "/api"
+    },
+    {
+      "src": "^/admin/login/?$",
+      "dest": "/admin/login.html"
+    },
+    {
+      "src": "^/admin/?$",
+      "dest": "/admin/index.html"
+    },
+    {
+      "handle": "filesystem"
+    }
+  ]
+}

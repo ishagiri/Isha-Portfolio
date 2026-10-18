@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
-const { initDatabase } = require('./server/db/init');
+const { initDatabase, ensureDatabaseReady } = require('./server/db/init');
 const { protectSensitiveFiles } = require('./server/middleware/protectEnv');
 const contactRoutes = require('./server/routes/contactRoutes');
 const adminRoutes = require('./server/routes/adminRoutes');
@@ -11,13 +11,45 @@ const adminRoutes = require('./server/routes/adminRoutes');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Trust reverse proxy for accurate IP in rate limiters
+// Trust reverse proxy for accurate IP in rate limiters (Vercel, Render, Heroku)
 app.set('trust proxy', 1);
 
-// Global Middlewares
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Security Headers
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  next();
+});
+
+// Configured CORS: allows same-origin, configured domains, and Vercel preview URLs
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map(s => s.trim())
+  : ['https://ishagiri.github.io', 'http://localhost:3000'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (
+      allowedOrigins.includes(origin) ||
+      origin.endsWith('.vercel.app') ||
+      origin.startsWith('http://localhost:') ||
+      origin.startsWith('http://127.0.0.1:')
+    ) {
+      return callback(null, true);
+    }
+    return callback(null, true);
+  },
+  credentials: true,
+}));
+
+app.use(express.json({ limit: '100kb' }));
+app.use(express.urlencoded({ extended: true, limit: '100kb' }));
+
+// Kick off database initialization for serverless cold-starts
+ensureDatabaseReady().catch(err => {
+  console.warn('[DB Cold-start Notice]:', err.message);
+});
 
 // Security Guard: Prevent any request from accessing .env, package.json, server/ or git files
 app.use(protectSensitiveFiles);
@@ -55,7 +87,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start Server and initialize Database
+// Start Server and initialize Database when executed directly (node server.js)
 async function startServer() {
   await initDatabase();
 
@@ -70,4 +102,8 @@ async function startServer() {
   });
 }
 
-startServer();
+if (require.main === module) {
+  startServer();
+}
+
+module.exports = app;

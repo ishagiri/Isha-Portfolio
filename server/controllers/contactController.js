@@ -1,5 +1,5 @@
 const { pool, query } = require('../db/connection');
-const { isDatabaseReady } = require('../db/init');
+const { isDatabaseReady, ensureDatabaseReady } = require('../db/init');
 
 // Temporary in-memory storage fallback if MySQL is disconnected
 const inMemoryMessages = [];
@@ -75,6 +75,9 @@ async function submitContact(req, res) {
         message: 'Your message was flagged as potential spam. Please revise your message.',
       });
     }
+
+    // Ensure DB is ready in serverless environments
+    await ensureDatabaseReady();
 
     // Save to Database with parameterized SQL query
     let savedId = null;
