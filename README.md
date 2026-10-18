@@ -2,7 +2,7 @@
 
 A premium, futuristic developer portfolio showcasing my skills, projects, and experience as a web developer and UI/UX designer.
 
-🔗 **Live Site:** [View Portfolio](https://ishaali.github.io/Isha-Portfolio) *(update with your GitHub Pages URL)*
+🔗 **Live Site:** [View Portfolio]https://ishagiri.github.io/Isha-Portfolio/*(update with your GitHub Pages URL)*
 
 ---
 
