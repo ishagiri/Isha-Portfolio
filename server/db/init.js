@@ -11,27 +11,27 @@ async function initDatabase() {
   const user = process.env.DB_USER || 'root';
   const password = process.env.DB_PASSWORD || '';
   const database = process.env.DB_NAME || 'portfolio_db';
+  const isRemoteHost = host && host !== 'localhost' && host !== '127.0.0.1';
 
   try {
-    // 1. Try to ensure database exists locally (in cloud MySQL, DB is pre-created by the provider)
-    try {
-      const isRemoteHost = host && host !== 'localhost' && host !== '127.0.0.1';
-      const useSSL = process.env.DB_SSL === 'true' || (process.env.NODE_ENV === 'production' && isRemoteHost);
-      const rootConn = await mysql.createConnection({
-        host,
-        port,
-        user,
-        password,
-        ...(useSSL ? { ssl: { rejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED !== 'false' } } : {}),
-      });
+    // 1. In local dev only, ensure database exists (cloud databases like TiDB already have portfolio_db pre-created)
+    if (!isRemoteHost) {
+      try {
+        const rootConn = await mysql.createConnection({
+          host,
+          port,
+          user,
+          password,
+        });
 
-      await rootConn.query(`CREATE DATABASE IF NOT EXISTS \`${database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
-      await rootConn.end();
-    } catch (rootErr) {
-      // Non-fatal: Managed cloud MySQL providers restrict CREATE DATABASE or require selecting an existing DB
+        await rootConn.query(`CREATE DATABASE IF NOT EXISTS \`${database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
+        await rootConn.end();
+      } catch (rootErr) {
+        // Non-fatal for local setup
+      }
     }
 
-    // 2. Create tables using the pool
+    // 2. Ensure tables exist (safe and non-destructive: IF NOT EXISTS preserves all existing data)
     await pool.query(`
       CREATE TABLE IF NOT EXISTS messages (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -55,9 +55,11 @@ async function initDatabase() {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
 
-    // 3. Seed default admin if table is empty and credentials are provided in .env
+    // 3. Seed initial admin only if table is completely empty and ADMIN_PASSWORD is provided in .env
     const [rows] = await pool.query('SELECT COUNT(*) as count FROM admins');
-    if (rows[0].count === 0 && process.env.ADMIN_PASSWORD) {
+    const adminCount = rows && rows.length > 0 ? Number(rows[0].count) : 0;
+
+    if (adminCount === 0 && process.env.ADMIN_PASSWORD) {
       const defaultUsername = process.env.ADMIN_USERNAME || 'admin';
       const defaultEmail = process.env.ADMIN_EMAIL || 'admin@portfolio.com';
       const defaultPassword = process.env.ADMIN_PASSWORD;
@@ -74,15 +76,14 @@ async function initDatabase() {
     }
 
     dbReady = true;
-    console.log(`[Database] Connected successfully to MySQL database "${database}".`);
+    console.log(`[Database] Connected successfully to database "${database}".`);
     return true;
   } catch (error) {
     dbReady = false;
     console.warn('--------------------------------------------------');
-    console.warn('[Database Notice] Could not connect to MySQL.');
+    console.warn('[Database Notice] Could not connect to database.');
     console.warn(`Reason: ${error.message}`);
-    console.warn('Check your DB_USER, DB_PASSWORD, and DB_NAME in .env');
-    console.warn('Make sure MySQL80 service is running.');
+    console.warn('Check DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME, and DB_SSL in environment variables.');
     console.warn('--------------------------------------------------');
     return false;
   }
